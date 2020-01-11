@@ -1,5 +1,6 @@
 from tehran_stocks import Stocks,db,get_asset
 import pandas as pd
+pd.set_option('plotting.backend', 'pandas_bokeh')
 import matplotlib.pyplot as plt
 '''tseStock handle basic operations on TSE data fetch from 
     tehran-stocks library
@@ -17,7 +18,13 @@ class tseStock():
             self.__price__ = self.__stock__.df.loc[start_date:end_date]
         else:
             self.__price__ = self.__stock__.df
-
+    @property
+    def figsize(self):
+        if(pd.get_option('plotting.backend')== 'pandas_bokeh'):
+            self.figsize=(800,400)
+        else:
+            self.figsize = (20,10)
+        return self.figsize
     def ma(self,window=20):
         if(len(self.__price__.close)>window):
             try:
@@ -61,11 +68,12 @@ afra = tseStock('افرا','2019','2020')
 print(afra)
 print(afra.close.head())
 #afra.plot('2019','2020')
-afra.close.plot(figsize=(20,10),grid=True,legend=True)
-afra.ma(20).plot(figsize=(20,10),grid=True,legend=True)
 
-afra.ma(50).plot(figsize=(20,10),grid=True,legend=True)
-afra.ma(200).plot(figsize=(20,10),grid=True,legend=True,title="Afranet daily close with 3 SMA")
+afra.close.plot(figsize=afra.figsize,legend=True)
+afra.ma(20).plot(figsize=afra.figsize,legend=True)
+
+afra.ma(50).plot(figsize=afra.figsize,legend=True)
+afra.ma(200).plot(figsize=afra.figsize,legend=True,title="Afranet daily close with 3 SMA")
 
 plt.show()
 
