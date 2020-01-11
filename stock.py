@@ -21,10 +21,10 @@ class tseStock():
     @property
     def figsize(self):
         if(pd.get_option('plotting.backend')== 'pandas_bokeh'):
-            self.figsize=(800,400)
+            figsize=(800,400)
         else:
-            self.figsize = (20,10)
-        return self.figsize
+            figsize = (20,10)
+        return figsize
     def ma(self,window=20):
         if(len(self.__price__.close)>window):
             try:
