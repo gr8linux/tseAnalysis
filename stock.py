@@ -1,6 +1,6 @@
 from tehran_stocks import Stocks,db,get_asset
 import pandas as pd
-pd.set_option('plotting.backend', 'pandas_bokeh')
+#pd.set_option('plotting.backend', 'pandas_bokeh')
 import matplotlib.pyplot as plt
 '''tseStock handle basic operations on TSE data fetch from 
     tehran-stocks library
@@ -60,14 +60,19 @@ class tseStock():
     def __str__(self):
         return self.name
 
-
-afra = tseStock('افرا','2019','2020')
+def stfinder():
+    for i in Stocks.query.filter(Stocks.estimatedEps!=None).all():
+        if(len(i.df.close)>0):
+            if(i.estimatedEps/i.df.close.iloc[-1] > 0.2 ):
+                print(i.name,i.estimatedEps/i.df.close.iloc[-1])
+#stfinder()
+afra = tseStock('فولاد','2017','2020')
 
 #afra.ma(10).plot()
 #afra.df.close.plot()
 print(afra)
 print(afra.close.head())
-#afra.plot('2019','2020')
+#afra.plot('2018','2020')
 
 afra.close.plot(figsize=afra.figsize,legend=True)
 afra.ma(20).plot(figsize=afra.figsize,legend=True)
